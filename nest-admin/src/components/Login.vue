@@ -33,14 +33,14 @@
 					style="max-width: 460px"
 					class="register"
 				>
+				<el-form-item label="用户名">
+						<el-input v-model="loginForm.name" />
+					</el-form-item>
 					<el-form-item label="手机号">
 						<el-input v-model="loginForm.phone" />
 					</el-form-item>
 					<el-form-item label="密码">
 						<el-input type="password" v-model="loginForm.password" />
-					</el-form-item>
-					<el-form-item label="再次输入密码">
-						<el-input type="password" v-model="loginForm.replyPassword" />
 					</el-form-item>
 					<el-form-item>
 						<el-button @click="registerSubmit">注册</el-button>
@@ -81,7 +81,7 @@ const formLabelAlign = reactive<{
 })
 
 const loginSubmit = async () => {
-	await login(formLabelAlign).then(res => res.json())
+	await login(formLabelAlign)
 }
 
 /* ============================ 注册 ================================ */
@@ -89,15 +89,15 @@ const loginSubmit = async () => {
 const loginForm = reactive<{
 	phone: string
 	password: string
-	replyPassword: string
+	name: string
 }>({
 	phone: '',
 	password: '',
-	replyPassword: ''
+	name: ''
 })
 
 const registerSubmit = async () => {
-	await addUser(loginForm).then(res => res.json())
+	await addUser(loginForm)
 }
 </script>
 

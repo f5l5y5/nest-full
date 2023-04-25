@@ -1,5 +1,5 @@
 import { IsNotEmpty, IsString, Length } from 'class-validator';
-export class CreateLoginDto {
+export class LoginDto {
   @IsNotEmpty()
   @IsString({})
   @Length(3, 10, {
@@ -13,4 +13,13 @@ export class CreateLoginDto {
   @IsString()
   @Length(4, 4, { message: 'code长度为4个字符' })
   code: string;
+}
+
+export class CreateLoginDto {
+  @IsNotEmpty()
+  @IsString({})
+  phone: string;
+  @IsNotEmpty()
+  @IsString()
+  password: string;
 }

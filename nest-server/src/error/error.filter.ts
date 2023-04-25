@@ -13,11 +13,13 @@ export class ErrorFilter implements ExceptionFilter {
     const request = ctx.getRequest<Request>();
     const response = ctx.getResponse<Response>();
     const status = exception.getStatus();
+    console.log('打印***exception', exception.getResponse());
 
     response.status(status).json({
       code: 0,
       data: exception.message,
       success: false,
+      // errorMessage: exception.getResponse()?.message as string
       path: request.url,
       status,
       time: new Date().getTime(),
