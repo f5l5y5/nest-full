@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt/dist';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateLoginDto, LoginDto } from './dto/create-login.dto';
@@ -9,6 +10,7 @@ import { User } from './entities/user.entity';
 export class LoginService {
   constructor(
     @InjectRepository(User) private readonly user: Repository<User>,
+    private jwtService: JwtService,
   ) {}
 
   async createUser(createLoginDto: CreateLoginDto) {
@@ -21,7 +23,7 @@ export class LoginService {
     const user = await this.user.findOne({ where: { name } });
     console.log('打印***user', user);
     if (user && name === user.name && password === user.password) {
-      return { token: '1233333333333333' };
+      return this.jwtService.sign(loginDto);
     } else {
       return '登陆失败';
     }

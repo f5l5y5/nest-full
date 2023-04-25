@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -6,6 +7,12 @@ import { LoginModule } from './login/login.module';
 
 @Module({
   imports: [
+    JwtModule.register({
+      secret: 'taoism',
+      signOptions: {
+        expiresIn: '1d',
+      },
+    }),
     TypeOrmModule.forRoot({
       type: 'mysql', //数据库类型
       username: 'root', //账号
