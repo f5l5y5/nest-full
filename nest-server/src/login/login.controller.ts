@@ -12,7 +12,6 @@ import {
 import { LoginService } from './login.service';
 import { CreateLoginDto, LoginDto } from './dto/create-login.dto';
 import { UpdateLoginDto } from './dto/update-login.dto';
-import * as svgCaptcha from 'svg-captcha';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @Controller({
@@ -49,22 +48,18 @@ export class LoginController {
 
   @Get('/getDynamicCode')
   @ApiOperation({ summary: '获取动态验证码', description: '获取动态验证码' })
-  createDynamicCode(@Req() req, @Res() res) {
-    const captcha = svgCaptcha.create({
-      size: 4,
-      fontSize: 50,
-      width: 100,
-      height: 34,
-      background: '#cc9966',
-    });
-    req.session.code = captcha.text;
+  async createDynamicCode(@Req() req, @Res() res) {
+    const captcha = await this.loginService.createCode();
+
+    // req.session.code = captcha.text;
     res.type('image/svg+xml');
     res.send(captcha.data);
     console.log('打印***req,res', req.session);
   }
 
   @Get()
-  findAll() {
+  findAll(@Req() req) {
+    console.log('打印***req.session', req.session);
     return this.loginService.findAll();
   }
 

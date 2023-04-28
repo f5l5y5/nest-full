@@ -4,15 +4,21 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { LoginModule } from './login/login.module';
-
+import config from './config';
+import { JwtStrategy } from './common/jwt.strategy';
+import { RedisModule } from 'nestjs-redis';
+import { LoginService } from './login/login.service';
 @Module({
   imports: [
-    JwtModule.register({
-      secret: 'taoism',
-      signOptions: {
-        expiresIn: '1d',
-      },
+    JwtModule.register(config.JwtConfig),
+    RedisModule.register({
+      host: 'localhost',
+      port: 6379,
+      // db: 'redis',
+      password: '',
+      keyPrefix: 'yn',
     }),
+
     TypeOrmModule.forRoot({
       type: 'mysql', //数据库类型
       username: 'root', //账号
@@ -29,6 +35,6 @@ import { LoginModule } from './login/login.module';
     LoginModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, JwtStrategy],
 })
 export class AppModule {}

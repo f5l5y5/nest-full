@@ -1,5 +1,5 @@
 <template>
-	<div class="wraps">
+	<div class="wraps" v-show="!isLogin">
 		<el-tabs v-model="activeName" type="card" @tab-click="handleClick">
 			<el-tab-pane label="账号登录" name="first">
 				<el-form
@@ -49,11 +49,19 @@
 			</el-tab-pane>
 		</el-tabs>
 	</div>
+  <div v-show="isLogin">
+    <h1>
+      登录成功
+    </h1>
+  </div>
 </template>
 
 <script setup lang="ts">
 import { addUser, login, baseUrl } from '@/api/index'
 import { reactive, ref } from 'vue'
+
+const isLogin = ref(false)
+
 
 const activeName = ref('first')
 
@@ -64,7 +72,7 @@ const handleClick = (tab: any) => {
 	}
 }
 /* ============================ 登录 ================================ */
-const codeUrl = ref<string>(baseUrl + '/login/getDynamicCode')
+const codeUrl = ref<string>(baseUrl + '/v1/login/getDynamicCode')
 // 默认写成图片地址，每次点击获 需要重新更新视图
 const resetCode = () => (codeUrl.value = codeUrl.value + '?' + Math.random())
 
@@ -81,7 +89,10 @@ const formLabelAlign = reactive<{
 })
 
 const loginSubmit = async () => {
-	await login(formLabelAlign)
+	const res = await login(formLabelAlign)
+	if (res.code === 1) {
+		isLogin.value = true
+	}
 }
 
 /* ============================ 注册 ================================ */

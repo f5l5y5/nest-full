@@ -1,6 +1,6 @@
 
 <template>
-  <Login msg="Vite + Vue" />
+  <Login />
 </template>
 
 
